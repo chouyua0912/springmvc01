@@ -3,15 +3,19 @@ package z.learn.api;
 import org.springframework.web.bind.annotation.*;
 import z.learn.model.User;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserApi {
 
-    @RequestMapping("/{id}")
-    public User getUserById(@PathVariable("id") String id) {
+    @RequestMapping(method = RequestMethod.GET)
+    public List<User> getUsers(@RequestParam(value = "id", required = false) String id) {
 
-        return new User(id);
+        return Collections.singletonList(new User(id));
     }
+
 
     @RequestMapping(method = RequestMethod.POST)
     public User addUser(User u) {

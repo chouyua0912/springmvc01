@@ -44,7 +44,7 @@ public class UserApiTest {
      */
     @Test
     public void testGetUserById() throws Exception {
-        this.mockMvc.perform(get("/user/test").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        this.mockMvc.perform(get("/user", "id=test").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.name").value("test"));
