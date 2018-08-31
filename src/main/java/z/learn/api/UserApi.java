@@ -10,6 +10,12 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserApi {
 
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
+    public List<User> getUsers() {
+        throw new RuntimeException("Can not find..");
+    }
+
+
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getUsers(@RequestParam(value = "id", required = false) String id) {
 

@@ -860,7 +860,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
     /**
      * Exposes the DispatcherServlet-specific request attributes and delegates to {@link #doDispatch}
-     * for the actual dispatching.
+     * for the actual dispatching.                      调用实际分发的doDispatch方法前处理属性、参数
      */
     @Override
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -898,7 +898,7 @@ public class DispatcherServlet extends FrameworkServlet {
         request.setAttribute(FLASH_MAP_MANAGER_ATTRIBUTE, this.flashMapManager);
 
         try {
-            doDispatch(request, response);
+            doDispatch(request, response);          // 实际进行请求分发
         }
         finally {
             if (!WebAsyncUtils.getAsyncManager(request).isConcurrentHandlingStarted()) {
@@ -911,7 +911,7 @@ public class DispatcherServlet extends FrameworkServlet {
     }
 
     /**
-     * Process the actual dispatching to the handler.
+     * Process the actual dispatching to the handler.           总的请求控制入口
      * <p>The handler will be obtained by applying the servlet's HandlerMappings in order.
      * The HandlerAdapter will be obtained by querying the servlet's installed HandlerAdapters
      * to find the first that supports the handler class.
@@ -937,14 +937,14 @@ public class DispatcherServlet extends FrameworkServlet {
                 multipartRequestParsed = (processedRequest != request);
 
                 // Determine handler for the current request.
-                mappedHandler = getHandler(processedRequest);
+                mappedHandler = getHandler(processedRequest);                       // 找到合适的HandlerExecutionChain
                 if (mappedHandler == null || mappedHandler.getHandler() == null) {
                     noHandlerFound(processedRequest, response);
                     return;
                 }
 
-                // Determine handler adapter for the current request.
-                HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+                // Determine handler adapter for the current request.                   封装成Adapter
+                HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());  // 获取handlerAdapter，ServletHandlerAdapter之类的，HttpRequestHandlerAdapter
 
                 // Process last-modified header, if supported by the handler.
                 String method = request.getMethod();
@@ -959,7 +959,7 @@ public class DispatcherServlet extends FrameworkServlet {
                     }
                 }
 
-                if (!mappedHandler.applyPreHandle(processedRequest, response)) {
+                if (!mappedHandler.applyPreHandle(processedRequest, response)) {    // HandlerExecutionChain 里的 interceptor 前处理
                     return;
                 }
 
@@ -971,7 +971,7 @@ public class DispatcherServlet extends FrameworkServlet {
                 }
 
                 applyDefaultViewName(processedRequest, mv);
-                mappedHandler.applyPostHandle(processedRequest, response, mv);
+                mappedHandler.applyPostHandle(processedRequest, response, mv);      // // HandlerExecutionChain 里的 interceptor 后处理
             }
             catch (Exception ex) {
                 dispatchException = ex;
@@ -981,7 +981,7 @@ public class DispatcherServlet extends FrameworkServlet {
                 // making them available for @ExceptionHandler methods and other scenarios.
                 dispatchException = new NestedServletException("Handler dispatch failed", err);
             }
-            processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);        // 处理纷纷结果，包括异常
+            processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);        // 分发处理结果，包括异常
         }
         catch (Exception ex) {
             triggerAfterCompletion(processedRequest, response, mappedHandler, ex);

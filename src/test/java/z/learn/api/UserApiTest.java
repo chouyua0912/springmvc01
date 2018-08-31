@@ -44,7 +44,7 @@ public class UserApiTest {
      */
     @Test
     public void testGetUserById() throws Exception {
-        this.mockMvc.perform(get("/user", "id=test").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        this.mockMvc.perform(get("/users", "id=test").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.name").value("test"));
@@ -52,7 +52,15 @@ public class UserApiTest {
 
     @Test
     public void testAddUser() throws Exception {
-        this.mockMvc.perform(post("/user", new User("abc")).accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        this.mockMvc.perform(post("/users", new User("abc")).accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.name").value("abc"));
+    }
+
+    @Test
+    public void testGetUsers() throws Exception {
+        this.mockMvc.perform(get("/users/list").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.name").value("abc"));
