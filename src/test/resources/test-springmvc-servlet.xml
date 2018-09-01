@@ -9,5 +9,12 @@
 
     <mvc:annotation-driven/>
     <context:component-scan base-package="z.learn.api"/>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/users/*"/>
+            <bean class="z.learn.api.SystemOutInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

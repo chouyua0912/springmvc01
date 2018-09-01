@@ -60,8 +60,8 @@ import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
 /**
- * Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers
- * or HTTP-based remote service exporters. Dispatches to registered handlers for processing
+ * Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers        核心MVC控制器
+ * or HTTP-based remote service exporters. Dispatches to registered handlers for processing     是一个servlet，所以启动是从init方法开始，被容器调用
  * a web request, providing convenient mapping and exception handling facilities.
  *
  * <p>This servlet is very flexible: It can be used with just about any workflow, with the
@@ -936,7 +936,7 @@ public class DispatcherServlet extends FrameworkServlet {
                 processedRequest = checkMultipart(request);
                 multipartRequestParsed = (processedRequest != request);
 
-                // Determine handler for the current request.
+                // HandlerExecutionChain       Determine handler for the current request.
                 mappedHandler = getHandler(processedRequest);                       // 找到合适的HandlerExecutionChain
                 if (mappedHandler == null || mappedHandler.getHandler() == null) {
                     noHandlerFound(processedRequest, response);
@@ -1146,8 +1146,8 @@ public class DispatcherServlet extends FrameworkServlet {
     }
 
     /**
-     * Return the HandlerExecutionChain for this request.
-     * <p>Tries all handler mappings in order.
+     * Return the HandlerExecutionChain for this request.         获取到handlerMapping       RequestMappingHandlerMapping
+     * <p>Tries all handler mappings in order.                                              BeanNameUrlHandlerMapping
      * @param request current HTTP request
      * @return the HandlerExecutionChain, or {@code null} if no handler could be found
      */

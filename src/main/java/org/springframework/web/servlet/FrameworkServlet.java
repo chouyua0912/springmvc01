@@ -144,7 +144,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
     public static final String DEFAULT_NAMESPACE_SUFFIX = "-servlet";
 
     /**
-     * Default context class for FrameworkServlet.
+     * Default context class for FrameworkServlet.                  默认使用的ApplicationContext实现类
      * @see org.springframework.web.context.support.XmlWebApplicationContext
      */
     public static final Class<?> DEFAULT_CONTEXT_CLASS = XmlWebApplicationContext.class;
@@ -542,14 +542,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
             }
         }
         if (wac == null) {
-            // No context instance was injected at construction time -> see if one
-            // has been registered in the servlet context. If one exists, it is assumed
+            // No context instance was injected at construction time -> see if one          构造时候没有传入容器引用
+            // has been registered in the servlet context. If one exists, it is assumed     查找有没有父容器
             // that the parent context (if any) has already been set and that the
             // user has performed any initialization such as setting the context id
             wac = findWebApplicationContext();
         }
         if (wac == null) {
-            // No context instance is defined for this servlet -> create a local one
+            // No context instance is defined for this servlet -> create a local one        创建默认的context实现类
             wac = createWebApplicationContext(rootContext);
         }
 
@@ -612,7 +612,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
      * @see org.springframework.web.context.support.XmlWebApplicationContext
      */
     protected WebApplicationContext createWebApplicationContext(ApplicationContext parent) {
-        Class<?> contextClass = getContextClass();
+        Class<?> contextClass = getContextClass();          // contextClass = DEFAULT_CONTEXT_CLASS; = XmlWebApplicationContext.class;
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Servlet with name '" + getServletName() +
                     "' will try to create custom WebApplicationContext context of class '" +

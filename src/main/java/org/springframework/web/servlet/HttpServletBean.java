@@ -138,8 +138,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
     }
 
     /**
-     * Map config parameters onto bean properties of this servlet, and
-     * invoke subclass initialization.
+     * Map config parameters onto bean properties of this servlet, and              初始化入口
+     * invoke subclass initialization.                                              Servlet -> init ， 容器初始化Servlet时候调用
      * @throws ServletException if bean properties are invalid (or required
      * properties are missing), or if subclass initialization fails.
      */
