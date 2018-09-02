@@ -473,7 +473,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
     /**
-     * This implementation calls {@link #initStrategies}.
+     * This implementation calls {@link #initStrategies}.                   子类的初始化逻辑，重写了父类的逻辑
      */
     @Override
     protected void onRefresh(ApplicationContext context) {
@@ -481,7 +481,7 @@ public class DispatcherServlet extends FrameworkServlet {
     }
 
     /**
-     * Initialize the strategy objects that this servlet uses.
+     * Initialize the strategy objects that this servlet uses.              实际的初始化逻辑
      * <p>May be overridden in subclasses in order to initialize further strategy objects.
      */
     protected void initStrategies(ApplicationContext context) {
@@ -563,7 +563,7 @@ public class DispatcherServlet extends FrameworkServlet {
     }
 
     /**
-     * Initialize the HandlerMappings used by this class.
+     * Initialize the HandlerMappings used by this class.               初始化 mapping
      * <p>If no HandlerMapping beans are defined in the BeanFactory for this namespace,
      * we default to BeanNameUrlHandlerMapping.
      */

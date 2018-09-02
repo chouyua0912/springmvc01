@@ -24,9 +24,9 @@ import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 /**
- * {@link org.springframework.web.context.WebApplicationContext} implementation
- * which takes its configuration from XML documents, understood by an
- * {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
+ * {@link org.springframework.web.context.WebApplicationContext} implementation             并没有加入逻辑针对web需要注册那些bean
+ * which takes its configuration from XML documents, understood by an                       只实现web环境下，如何读取加载context.xml
+ * {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.                   实际的bean注册，是由解析逻辑来实现的
  * This is essentially the equivalent of
  * {@link org.springframework.context.support.GenericXmlApplicationContext}
  * for a web environment.

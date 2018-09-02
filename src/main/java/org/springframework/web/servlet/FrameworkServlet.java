@@ -492,7 +492,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
         try {
             this.webApplicationContext = initWebApplicationContext();
-            initFrameworkServlet();
+            initFrameworkServlet();                                     // 总会预留给子类处理自己的逻辑，如果自己是个抽象类的话
         }
         catch (ServletException ex) {
             this.logger.error("Context initialization failed", ex);
@@ -550,14 +550,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
         }
         if (wac == null) {
             // No context instance is defined for this servlet -> create a local one        创建默认的context实现类
-            wac = createWebApplicationContext(rootContext);
+            wac = createWebApplicationContext(rootContext);         // 内部完成了bean的加载
         }
 
         if (!this.refreshEventReceived) {
             // Either the context is not a ConfigurableApplicationContext with refresh
             // support or the context injected at construction time had already been
             // refreshed -> trigger initial onRefresh manually here.
-            onRefresh(wac);
+            onRefresh(wac);                                         // 如果是抽象类，一定留给子类实现自己的初始化逻辑
         }
 
         if (this.publishContext) {
@@ -625,13 +625,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
                             "] is not of type ConfigurableWebApplicationContext");
         }
         ConfigurableWebApplicationContext wac =
-                (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
+                (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);       // 完成实例化，通过反射
 
         wac.setEnvironment(getEnvironment());
         wac.setParent(parent);
         wac.setConfigLocation(getContextConfigLocation());
 
-        configureAndRefreshWebApplicationContext(wac);
+        configureAndRefreshWebApplicationContext(wac);          // 完成applicationContext的初始化
 
         return wac;
     }
@@ -665,7 +665,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
         postProcessWebApplicationContext(wac);
         applyInitializers(wac);
-        wac.refresh();
+        wac.refresh();                              // 初始化ApplicationContext，加载配置或者是
     }
 
     /**

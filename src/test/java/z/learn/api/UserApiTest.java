@@ -42,7 +42,7 @@ public class UserApiTest {
     /**
      * Method: getUserById(String id)
      */
-    @Test
+/*    @Test
     public void testGetUserById() throws Exception {
         this.mockMvc.perform(get("/users", "id=test").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
@@ -64,5 +64,5 @@ public class UserApiTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.name").value("abc"));
-    }
+    }*/
 } 
