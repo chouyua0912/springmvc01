@@ -281,7 +281,7 @@ public class ContextLoader {
 
 
     /**
-     * Initialize Spring's web application context for the given servlet context,
+     * Initialize Spring's web application context for the given servlet context,           初始化ROOT CONTEXT
      * using the application context provided at construction time, or creating a new one
      * according to the "{@link #CONTEXT_CLASS_PARAM contextClass}" and
      * "{@link #CONFIG_LOCATION_PARAM contextConfigLocation}" context-params.
@@ -309,7 +309,7 @@ public class ContextLoader {
             // Store context in local instance variable, to guarantee that
             // it is available on ServletContext shutdown.
             if (this.context == null) {
-                this.context = createWebApplicationContext(servletContext);                 // 实例化Spring容器
+                this.context = createWebApplicationContext(servletContext);                 // 实例化Spring容器 Raw 没有加载配置，初始化singleton
             }
             if (this.context instanceof ConfigurableWebApplicationContext) {
                 ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) this.context;
@@ -319,13 +319,13 @@ public class ContextLoader {
                     if (cwac.getParent() == null) {
                         // The context instance was injected without an explicit parent ->
                         // determine parent for root web application context, if any.
-                        ApplicationContext parent = loadParentContext(servletContext);      // 设置父Spring容器
+                        ApplicationContext parent = loadParentContext(servletContext);      // 设置父Spring容器   没有父容器
                         cwac.setParent(parent);
                     }
-                    configureAndRefreshWebApplicationContext(cwac, servletContext);         // 初始化Spring容器
+                    configureAndRefreshWebApplicationContext(cwac, servletContext);         // 初始化Spring容器 加载Context配置，实例化Singleton
                 }
             }
-            servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
+            servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);    // 注册自己为ROOT_WEB_APPLICATION_CONTEXT
 
             ClassLoader ccl = Thread.currentThread().getContextClassLoader();
             if (ccl == ContextLoader.class.getClassLoader()) {
@@ -371,8 +371,8 @@ public class ContextLoader {
      * @see ConfigurableWebApplicationContext
      */
     protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
-        Class<?> contextClass = determineContextClass(sc);
-        if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
+        Class<?> contextClass = determineContextClass(sc);  // 实现类是 XmlWebApplicationContext
+        if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {      // 没有实现 ConfigurableWebApplicationContext 接口
             throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
                     "] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
         }

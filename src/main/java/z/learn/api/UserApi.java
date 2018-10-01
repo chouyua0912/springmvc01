@@ -1,8 +1,11 @@
 package z.learn.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import z.learn.model.User;
+import z.learn.service.UserService;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,4 +31,7 @@ public class UserApi {
         System.out.println(u.getName());
         return u;
     }
+
+    @Autowired
+    private UserService userService;
 }

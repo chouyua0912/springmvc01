@@ -491,7 +491,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
         long startTime = System.currentTimeMillis();
 
         try {
-            this.webApplicationContext = initWebApplicationContext();
+            this.webApplicationContext = initWebApplicationContext();   // 初始化Web Context
             initFrameworkServlet();                                     // 总会预留给子类处理自己的逻辑，如果自己是个抽象类的话
         }
         catch (ServletException ex) {
@@ -524,7 +524,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
                 WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         WebApplicationContext wac = null;
 
-        if (this.webApplicationContext != null) {
+        if (this.webApplicationContext != null) {       // 在构造DispatcherServlet时候有传入Context实例
             // A context instance was injected at construction time -> use it
             wac = this.webApplicationContext;
             if (wac instanceof ConfigurableWebApplicationContext) {
@@ -550,7 +550,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
         }
         if (wac == null) {
             // No context instance is defined for this servlet -> create a local one        创建默认的context实现类
-            wac = createWebApplicationContext(rootContext);         // 内部完成了bean的加载
+            wac = createWebApplicationContext(rootContext);         // 内部完成了bean的加载， 设置了parent为ContextLoaderListener加载的context上下文
         }
 
         if (!this.refreshEventReceived) {
@@ -631,7 +631,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
         wac.setParent(parent);
         wac.setConfigLocation(getContextConfigLocation());
 
-        configureAndRefreshWebApplicationContext(wac);          // 完成applicationContext的初始化
+        configureAndRefreshWebApplicationContext(wac);          // 完成context配置文件的解析和加载，初始化单例bean，激活事件通知。
 
         return wac;
     }
