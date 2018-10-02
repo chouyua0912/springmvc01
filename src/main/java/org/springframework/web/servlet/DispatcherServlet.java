@@ -275,7 +275,7 @@ public class DispatcherServlet extends FrameworkServlet {
     private static final Properties defaultStrategies;
 
     static {
-        // Load default strategy implementations from properties file.
+        // Load default strategy implementations from properties file.                      加载默认策略！！！
         // This is currently strictly internal and not meant to be customized
         // by application developers.
         try {
@@ -563,7 +563,7 @@ public class DispatcherServlet extends FrameworkServlet {
     }
 
     /**
-     * Initialize the HandlerMappings used by this class.               初始化 mapping
+     * Initialize the HandlerMappings used by this class.                               初始化 mapping
      * <p>If no HandlerMapping beans are defined in the BeanFactory for this namespace,
      * we default to BeanNameUrlHandlerMapping.
      */
@@ -870,7 +870,7 @@ public class DispatcherServlet extends FrameworkServlet {
                     " processing " + request.getMethod() + " request for [" + getRequestUri(request) + "]");
         }
 
-        // Keep a snapshot of the request attributes in case of an include,
+        // Keep a snapshot of the request attributes in case of an include,             保存请求现场以便恢复用，应对include请求的场景
         // to be able to restore the original attributes after the include.
         Map<String, Object> attributesSnapshot = null;
         if (WebUtils.isIncludeRequest(request)) {
@@ -884,13 +884,13 @@ public class DispatcherServlet extends FrameworkServlet {
             }
         }
 
-        // Make framework objects available to handlers and view objects.
-        request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
-        request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
-        request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
+        // Make framework objects available to handlers and view objects.               将框架属性设置到请求中
+        request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());    // 设置应用上下文
+        request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);                   // localeResolver
+        request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);                     // 主题
         request.setAttribute(THEME_SOURCE_ATTRIBUTE, getThemeSource());
 
-        FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(request, response);
+        FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(request, response);     // flashManager
         if (inputFlashMap != null) {
             request.setAttribute(INPUT_FLASH_MAP_ATTRIBUTE, Collections.unmodifiableMap(inputFlashMap));
         }
@@ -904,14 +904,14 @@ public class DispatcherServlet extends FrameworkServlet {
             if (!WebAsyncUtils.getAsyncManager(request).isConcurrentHandlingStarted()) {
                 // Restore the original attribute snapshot, in case of an include.
                 if (attributesSnapshot != null) {
-                    restoreAttributesAfterInclude(request, attributesSnapshot);
+                    restoreAttributesAfterInclude(request, attributesSnapshot);     // 恢复缓存的请求属性
                 }
             }
         }
     }
 
     /**
-     * Process the actual dispatching to the handler.           总的请求控制入口
+     * Process the actual dispatching to the handler.                                               总的请求控制入口
      * <p>The handler will be obtained by applying the servlet's HandlerMappings in order.
      * The HandlerAdapter will be obtained by querying the servlet's installed HandlerAdapters
      * to find the first that supports the handler class.
@@ -933,7 +933,7 @@ public class DispatcherServlet extends FrameworkServlet {
             Exception dispatchException = null;
 
             try {
-                processedRequest = checkMultipart(request);
+                processedRequest = checkMultipart(request);                 // 处理multipart
                 multipartRequestParsed = (processedRequest != request);
 
                 // HandlerExecutionChain       Determine handler for the current request.
@@ -963,8 +963,8 @@ public class DispatcherServlet extends FrameworkServlet {
                     return;
                 }
 
-                // Actually invoke the handler.
-                mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
+                // Actually invoke the handler.                                                 adapter没有持有handler，而是通过接收handler参数的方法来实现处理逻辑
+                mv = ha.handle(processedRequest, response, mappedHandler.getHandler());     //  通过Adapter代理执行实际的handler上的handle方法
 
                 if (asyncManager.isConcurrentHandlingStarted()) {
                     return;

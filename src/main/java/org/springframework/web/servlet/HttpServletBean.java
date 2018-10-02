@@ -47,8 +47,8 @@ import org.springframework.web.context.support.ServletContextResourceLoader;
 import org.springframework.web.context.support.StandardServletEnvironment;
 
 /**
- * Simple extension of {@link javax.servlet.http.HttpServlet} which treats
- * its config parameters ({@code init-param} entries within the
+ * Simple extension of {@link javax.servlet.http.HttpServlet} which treats      扩展HttpServlet，处理web.xml里包含的本Servlet实例的初始化参数init-params
+ * its config parameters ({@code init-param} entries within the                 不复写任何HttpServlet请求处理方法，全部留给子类实现
  * {@code servlet} tag in {@code web.xml}) as bean properties.
  *
  * <p>A handy superclass for any type of servlet. Type conversion of config
@@ -149,13 +149,13 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
             logger.debug("Initializing servlet '" + getServletName() + "'");
         }
 
-        // Set bean properties from init parameters.
+        // Set bean properties from init parameters.        将web.xml里面Servlet的init-param转换为BeanWrapper可以处理的PropertyValues, 设置FrameworkServlet的configLocation属性
         PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
         if (!pvs.isEmpty()) {
             try {
-                BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
+                BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);               // 通过工厂创建BeanWrapper实例
                 ResourceLoader resourceLoader = new ServletContextResourceLoader(getServletContext());
-                bw.registerCustomEditor(Resource.class, new ResourceEditor(resourceLoader, getEnvironment()));
+                bw.registerCustomEditor(Resource.class, new ResourceEditor(resourceLoader, getEnvironment()));  // 注册bean property editor
                 initBeanWrapper(bw);
                 bw.setPropertyValues(pvs, true);
             }
@@ -238,7 +238,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
             Enumeration<String> paramNames = config.getInitParameterNames();
             while (paramNames.hasMoreElements()) {
                 String property = paramNames.nextElement();
-                Object value = config.getInitParameter(property);
+                Object value = config.getInitParameter(property);       // 获取在web.xml里面配置的Servlet的init参数
                 addPropertyValue(new PropertyValue(property, value));
                 if (missingProps != null) {
                     missingProps.remove(property);
