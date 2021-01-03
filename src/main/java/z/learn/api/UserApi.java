@@ -1,6 +1,7 @@
 package z.learn.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import z.learn.model.User;
 import z.learn.service.UserService;
@@ -15,14 +16,16 @@ public class UserApi {
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)
     public List<User> getUsers() {
-        throw new RuntimeException("Can not find..");
+        return userService.getUsers();
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getUsers(@RequestParam(value = "id", required = false) String id) {
-
-        return Collections.singletonList(new User(id));
+        if (StringUtils.isEmpty(id)) {
+            userService.getUsers();
+        }
+        return userService.getUsers(id);
     }
 
 

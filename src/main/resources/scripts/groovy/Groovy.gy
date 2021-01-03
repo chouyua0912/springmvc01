@@ -1,0 +1,15 @@
+package scripts.groovy;
+
+// import the Messenger interface (written in Java) that is to be implemented
+import z.learn.service.Messenger
+
+// define the implementation in Groovy
+class GroovyMessenger implements Messenger {
+
+    String message
+
+    @Override
+    String getMessage() {
+        return "hello" + message;
+    }
+}
